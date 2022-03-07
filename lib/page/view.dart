@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:practice_flutter/home-contents.dart';
+import 'package:practice_flutter/page/login.dart';
 import '../mypage.dart';
 
 class View extends StatefulWidget {
@@ -31,7 +32,7 @@ class _View extends State<View> {
   Widget build(BuildContext context) {
     return PageView(
       controller: _pageController,
-      children: [HomeContents(), Mypage()],
+      children: [HomeContents(), Login()],
     );
   }
 
