@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:practice_flutter/home-contents.dart';
 import 'package:practice_flutter/home.dart';
+import 'package:practice_flutter/model/userModel.dart';
+import 'package:practice_flutter/services/firestore/user_service.dart';
 // import 'authentication_error.dart';
+import '../services/firestore/user_service.dart';
 
 // アカウント登録ページ
 class Registration extends StatefulWidget {
@@ -20,6 +23,7 @@ class _RegistrationState extends State<Registration> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   late UserCredential userCredential;
   late User user;
+  UserService userService = UserService();
 
   // エラーメッセージを日本語化するためのクラス
   // final auth_error = Authentication_error();
@@ -100,12 +104,14 @@ class _RegistrationState extends State<Registration> {
                       // 登録成功
                       // 登録したユーザー情報
                       user = userCredential.user!;
-                      print(user);
+
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => Home(user_id: user.uid),
                           ));
+                      await userService.createInitUser(
+                          user.uid, "userName", newEmail);
                     } catch (e) {
                       // 登録に失敗した場合
                       setState(() {
