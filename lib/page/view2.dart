@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:practice_flutter/bloc/view-ctrl-bloc.dart';
 import 'package:practice_flutter/home-contents.dart';
+import 'package:practice_flutter/next_page.dart';
 import 'package:practice_flutter/page/login.dart';
 import '../mypage.dart';
 
-class View extends StatefulWidget {
+class View2 extends StatefulWidget {
   final Stream<int> viewCtrl; //<-追加
 
-  View({Key? key, required this.viewCtrl})
+  View2({Key? key, required this.viewCtrl})
       : super(key: key); // <- streamの受け取り追加
-  _View createState() => _View();
+  _View2 createState() => _View2();
 }
 
-class _View extends State<View> {
+class _View2 extends State<View2> {
   // 使用されない場合もある、初期化にコストがかかる変数をlateで宣言しておくと、その変数が使用されない場合は初期化もされないのでコスト削減できます。
   PageController? _pageController;
   late ViewCtrlBloc viewCtrl;
@@ -36,7 +37,7 @@ class _View extends State<View> {
   Widget build(BuildContext context) {
     return PageView(
       controller: _pageController,
-      children: [HomeContents(), Login(viewCtrl: viewCtrl.viewStream)],
+      children: [HomeContents(), NextPage("name")],
     );
   }
 

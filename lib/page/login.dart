@@ -1,12 +1,15 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:practice_flutter/bloc/view-ctrl-bloc.dart';
 import 'package:practice_flutter/registration.dart';
 // import 'authentication_error.dart';
 import '/registration.dart';
 import '../home.dart';
 
 class Login extends StatefulWidget {
+  final Stream<int> viewCtrl; //<-追加
+  Login({Key? key, required this.viewCtrl});
   // Login(this.login_Email, this.login_Password);
   // String login_Email
   // String login_Password
@@ -25,7 +28,19 @@ class _LoginPage extends State<Login> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   // final firebase = Firebase.initializeApp();
   late UserCredential userCredential;
+  late ViewCtrlBloc viewCtrl;
   late User user;
+
+  @override
+  void initState() {
+    viewCtrl = ViewCtrlBloc();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   void _changeLoginEmail(String value) {
     setState(() {
@@ -53,7 +68,8 @@ class _LoginPage extends State<Login> {
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => Home(user_id: user.uid),
+            builder: (context) =>
+                Home(user_id: user.uid, viewCtrl: viewCtrl.viewStream),
           ));
     } catch (e) {
       // ログインに失敗した場合
@@ -156,4 +172,13 @@ class _LoginPage extends State<Login> {
       ]),
     );
   }
+
+  // listenPage() {
+  //   widget.viewCtrl.listen((event) {
+  //     // <- listenする
+  //     print(event);
+  //     _pageController!.animateToPage(event,
+  //         duration: Duration(milliseconds: 300), curve: Curves.easeOut);
+  //   });
+  // }
 }
