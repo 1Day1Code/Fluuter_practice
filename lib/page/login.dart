@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:practice_flutter/bloc/view-ctrl-bloc.dart';
 import 'package:practice_flutter/registration.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:practice_flutter/river_pod/userModel.dart';
 // import 'authentication_error.dart';
 import '/registration.dart';
 import '../home.dart';
@@ -58,8 +60,8 @@ class _LoginPage extends State<Login> {
     try {
       // メール/パスワードでユーザー登録
       userCredential = await auth.signInWithEmailAndPassword(
-        email: login_Email,
-        password: login_Password,
+        email: "test13@gmail.com",
+        password: "Password2",
       );
 
       // ログイン成功
@@ -85,92 +87,94 @@ class _LoginPage extends State<Login> {
   @override
   Widget build(BuildContext context) {
     Firebase.initializeApp();
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            // メールアドレスの入力フォーム
-            Padding(
-                padding: EdgeInsets.fromLTRB(25.0, 0, 25.0, 0),
+    return Consumer(builder: (context, ref, _) {
+      return Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              // メールアドレスの入力フォーム
+              Padding(
+                  padding: EdgeInsets.fromLTRB(25.0, 0, 25.0, 0),
+                  child: TextFormField(
+                    decoration: InputDecoration(labelText: "メールアドレス"),
+                    onChanged: _changeLoginEmail,
+                  )),
+
+              // パスワードの入力フォーム
+              Padding(
+                padding: EdgeInsets.fromLTRB(25.0, 0, 25.0, 10.0),
                 child: TextFormField(
-                  decoration: InputDecoration(labelText: "メールアドレス"),
-                  onChanged: _changeLoginEmail,
-                )),
-
-            // パスワードの入力フォーム
-            Padding(
-              padding: EdgeInsets.fromLTRB(25.0, 0, 25.0, 10.0),
-              child: TextFormField(
-                decoration: InputDecoration(labelText: "パスワード（8～20文字）"),
-                obscureText: true, // パスワードが見えないようRにする
-                maxLength: 20, // 入力可能な文字数
-                maxLengthEnforced: false, // 入力可能な文字数の制限を超える場合の挙動の制御
-                onChanged: _changeLoginPassWord,
+                  decoration: InputDecoration(labelText: "パスワード（8～20文字）"),
+                  obscureText: true, // パスワードが見えないようRにする
+                  maxLength: 20, // 入力可能な文字数
+                  maxLengthEnforced: false, // 入力可能な文字数の制限を超える場合の挙動の制御
+                  onChanged: _changeLoginPassWord,
+                ),
               ),
-            ),
 
-            // ログイン失敗時のエラーメッセージ
-            Padding(
-              padding: EdgeInsets.fromLTRB(20.0, 0, 20.0, 5.0),
-              child: Text(
-                infoText,
-                style: TextStyle(color: Colors.red),
+              // ログイン失敗時のエラーメッセージ
+              Padding(
+                padding: EdgeInsets.fromLTRB(20.0, 0, 20.0, 5.0),
+                child: Text(
+                  infoText,
+                  style: TextStyle(color: Colors.red),
+                ),
               ),
-            ),
 
-            ButtonTheme(
+              ButtonTheme(
+                minWidth: 350.0,
+                // height: 100.0,
+                child: RaisedButton(
+                  child: Text(
+                    'ログイン',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  textColor: Colors.white,
+                  color: Colors.blue,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  onPressed: login,
+                ),
+              ),
+            ],
+          ),
+        ),
+
+        // 画面下にボタンの配置
+        bottomNavigationBar:
+            Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ButtonTheme(
               minWidth: 350.0,
               // height: 100.0,
               child: RaisedButton(
-                child: Text(
-                  'ログイン',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                textColor: Colors.white,
-                color: Colors.blue,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                onPressed: login,
-              ),
+                  child: Text(
+                    'アカウントを作成する',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  textColor: Colors.blue,
+                  color: Colors.blue[50],
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+
+                  // ボタンクリック後にアカウント作成用の画面の遷移する。
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        fullscreenDialog: true,
+                        builder: (BuildContext context) => Registration(),
+                      ),
+                    );
+                  }),
             ),
-          ],
-        ),
-      ),
-
-      // 画面下にボタンの配置
-      bottomNavigationBar:
-          Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ButtonTheme(
-            minWidth: 350.0,
-            // height: 100.0,
-            child: RaisedButton(
-                child: Text(
-                  'アカウントを作成する',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                textColor: Colors.blue,
-                color: Colors.blue[50],
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-
-                // ボタンクリック後にアカウント作成用の画面の遷移する。
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      fullscreenDialog: true,
-                      builder: (BuildContext context) => Registration(),
-                    ),
-                  );
-                }),
           ),
-        ),
-      ]),
-    );
+        ]),
+      );
+    });
   }
 
   // listenPage() {

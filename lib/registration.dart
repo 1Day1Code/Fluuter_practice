@@ -124,6 +124,7 @@ class _RegistrationState extends State<Registration> {
                       await userService.createInitUser(
                           user.uid, "userName", newEmail);
                     } catch (e) {
+                      print(e);
                       // 登録に失敗した場合
                       setState(() {
                         // infoText = auth_error.register_error_msg(e.code);

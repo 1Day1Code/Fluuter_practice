@@ -23,7 +23,6 @@ class _View extends State<View> {
     viewCtrl = ViewCtrlBloc();
     _pageController = PageController(initialPage: 0); // 最初に表示するインデックス
     listenPage(); // <- インデックスの監視を追加
-    super.initState();
   }
 
   @override
@@ -44,7 +43,7 @@ class _View extends State<View> {
   listenPage() {
     widget.viewCtrl.listen((event) {
       // <- listenする
-      print(event);
+      // print(event);
       _pageController!.animateToPage(event,
           duration: Duration(milliseconds: 300), curve: Curves.easeOut);
     });

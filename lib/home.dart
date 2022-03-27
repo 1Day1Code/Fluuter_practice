@@ -12,15 +12,14 @@ class Home extends StatefulWidget {
   final Stream<int> viewCtrl; //<-追加
 
   Home({Key? key, required this.user_id, required this.viewCtrl});
-  @override
-  _Home createState() => _Home(user_id);
+  _Home createState() => _Home();
 }
 
 class _Home extends State<Home> {
-  _Home(this.user_id);
+  // _Home(this.user_id);
   late ViewCtrlBloc viewCtrl;
   // late ViewCtrlBloc viewCtrl;
-  final String user_id;
+  String? user_id;
   PageController? _pageController;
 
   @override
@@ -28,28 +27,29 @@ class _Home extends State<Home> {
     return Scaffold(
       // appBar: Header(),
       // <- 受け取るためにstreamを渡す
-      body: View2(viewCtrl: viewCtrl.viewStream),
+      body: View2(viewCtrl: viewCtrl.viewStream, userId: widget.user_id),
       //  <- 受け取るためにstreamを渡す
       bottomNavigationBar: Footer(viewCtrl: viewCtrl.viewSink),
       // <- インデックスを流すためにsinkを渡す
     );
-    return PageView(
-      controller: _pageController,
-      children: [
-        HomeContents(),
-        Text('ようこそ2',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-        Text(user_id),
-        // View(viewCtrl: viewCtrl.viewStream)
-      ],
-      // bottomNavigationBar: Footer(viewCtrl: viewCtrl.viewSink)
-    );
+    // return PageView(
+    //   controller: _pageController,
+    //   children: [
+    //     HomeContents(),
+    //     Text('ようこそ2',
+    //         style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+    //     Text(user_id),
+    //     // View(viewCtrl: viewCtrl.viewStream)
+    //   ],
+    //   // bottomNavigationBar: Footer(viewCtrl: viewCtrl.viewSink)
+    // );
   }
 
   @override
   void initState() {
     super.initState();
     viewCtrl = ViewCtrlBloc();
+    // print(widget.user_id);
     //  <-Blocをインスタンス化
     _pageController = PageController(initialPage: 0); // 最初に表示するインデックス
     listenPage();
@@ -66,7 +66,7 @@ class _Home extends State<Home> {
   listenPage() {
     widget.viewCtrl.listen((event) {
       // <- listenする
-      print(event);
+      // print(event);
       _pageController!.animateToPage(event,
           duration: Duration(milliseconds: 300), curve: Curves.easeOut);
     });

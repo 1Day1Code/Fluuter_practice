@@ -8,32 +8,34 @@ class UserModel {
   late String userName;
   late String email;
 
-  UserModel.fromMap(Map<String, dynamic> map) {
-    docId = map[UserField.docId];
-    userName = map[UserField.userName];
-    email = map[UserField.email];
+  // UserModel.fromMap(Map<String, dynamic>) {
+  //   this.docId = map[UserField.docId];
+  //   this.userName = map[UserField.userName];
+  //   this.email = map[UserField.email];
+  //   this.updateAt = map[UserField.updateAt];
+  //   this.updateAt = map[UserField.updateAt];
 
-    // DartのDateに変換
-    final originCreatedAt = map[UserField.createAt];
-    if (originCreatedAt is Timestamp) {
-      createAt = originCreatedAt.toDate();
-    }
+  //   // DartのDateに変換
+  //   final originCreatedAt = map[UserField.createAt];
+  //   if (originCreatedAt is Timestamp) {
+  //     createAt = originCreatedAt.toDate();
+  //   }
 
-    // DartのDateに変換
-    final originUpdateAt = map[UserField.updateAt];
-    if (originUpdateAt is Timestamp) {
-      updateAt = originUpdateAt.toDate();
-    }
-  }
+  //   // DartのDateに変換
+  //   final originUpdateAt = map[UserField.updateAt];
+  //   if (originUpdateAt is Timestamp) {
+  //     updateAt = originUpdateAt.toDate();
+  //   }
+  // }
 
   // Firestore用のMapに変換
   Map<String, dynamic> toMap() {
     return {
-      UserField.docId: this.docId,
-      UserField.userName: this.userName,
-      UserField.email: this.email,
-      UserField.createAt: this.createAt,
-      UserField.updateAt: this.updateAt,
+      UserField.docId: docId,
+      UserField.userName: userName,
+      UserField.email: email,
+      UserField.createAt: createAt,
+      UserField.updateAt: updateAt,
     };
   }
 }

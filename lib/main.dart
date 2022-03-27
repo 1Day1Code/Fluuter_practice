@@ -105,11 +105,12 @@ import './header.dart';
 import './footer.dart';
 import 'page/view.dart';
 import './bloc/view-ctrl-bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  runApp(ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatefulWidget {
